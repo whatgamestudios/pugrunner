@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8867924, g: 0.21783556, b: 0.004182993, a: 1}
+  m_Color: {r: 0.9, g: 0.9, b: 0.9, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -441,6 +441,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0111f5f60960d42da9a65def8976df33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PugRunner.GamePlayScene
+  minSpawnInterval: 0.6
+  maxSpawnInterval: 1.6
+  minSpeed: 400
+  maxSpeed: 900
+  obstacleHeight: 200
+  gamePanel: {fileID: 1704638445}
 --- !u!4 &940194423
 Transform:
   m_ObjectHideFlags: 0
