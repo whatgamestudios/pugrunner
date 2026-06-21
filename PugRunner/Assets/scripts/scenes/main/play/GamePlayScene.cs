@@ -1,5 +1,4 @@
-// Copyright (c) Whatgame Studios 2024 - 2025
-// Attach this script to a new empty GameObject called "GameManager" in GamePlayScene.
+// Copyright (c) Whatgame Studios 2026
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -22,7 +21,12 @@ namespace PugRunner {
 
 
         private Sprite[] obstacleSprites;
+        private ObstacleMetadata[] obstacleMetadata;
+        private int[] maxDropRate;
         private readonly List<MovingObstacle> activeObstacles = new List<MovingObstacle>();
+
+        private ObstacleMetadataManager obstacleMetadataManager;
+        private int level;
 
         void Start() {
             AuditLog.Log("GamePlay scene");
@@ -38,6 +42,14 @@ namespace PugRunner {
                 AuditLog.Log("GamePlayScene: missing GamePanel or obstacle sprites, obstacle spawning disabled");
                 return;
             }
+
+            // Initially, hard code the game date, game type, and iteration of the game.
+            uint gameDay = 2;
+            uint gameType = 0;
+            uint instanceOfGame = 0;
+            obstacleMetadataManager = new ObstacleMetadataManager(obstacleSprites, gameDay, gameType, instanceOfGame);
+            
+            level = 0;
         }
 
         // TODO this moves at the update rate, rather than at a fixed rate for all game players.
@@ -59,7 +71,14 @@ namespace PugRunner {
          * obstacle.
          */
         private void spawnRandomObstacle() {
-            Sprite sprite = obstacleSprites[Random.Range(0, obstacleSprites.Length)];
+            // Do this check here so that the log doesn't fill with null pointer
+            // exceptions if obstacleMetadataManager initialisation fails.
+            if (obstacleMetadataManager == null)
+            {
+                return;
+            }
+
+            Sprite sprite = obstacleSprites[obstacleMetadataManager.GetNextSpriteIndex(level)];
             float width = scale * sprite.rect.width;
             float height = scale * sprite.rect.height;
 
@@ -109,7 +128,7 @@ namespace PugRunner {
             }
 
             float rightActive = rightMostEdgeActive();
-            AuditLog.Log($"Right Active: {rightActive}, game width: {gamePanelRect.rect.width}");
+            // AuditLog.Log($"Right Active: {rightActive}, game width: {gamePanelRect.rect.width}");
 
             return rightActive < gamePanelRect.rect.width;
         }
