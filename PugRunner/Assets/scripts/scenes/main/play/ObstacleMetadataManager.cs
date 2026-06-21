@@ -45,6 +45,16 @@ namespace PugRunner {
                     dropRate = new uint[] {10, 10, 10, 10};
                     metadata = new ObstacleMetadata(name, dropRate);
                 }
+                else if (name == "ter04")
+                {
+                    dropRate = new uint[] {10, 10, 10, 10};
+                    metadata = new ObstacleMetadata(name, dropRate);
+                }
+                else if (name == "ter05")
+                {
+                    dropRate = new uint[] {10, 10, 10, 10};
+                    metadata = new ObstacleMetadata(name, dropRate);
+                }
                 else 
                 {
                     AuditLog.Log($"ERROR: Unknown sprite: {name}");
@@ -75,7 +85,7 @@ namespace PugRunner {
         public int GetNextSpriteIndex(int level)
         {
             uint chosen = SeedGen.GetNextValue(randomSeed, obsNum++, maxDropRate[level]);
-            AuditLog.Log($"GetNextSpriteIndex: Level: {level}, max drop rate: {maxDropRate[level]}, chosen: {chosen}");
+            //AuditLog.Log($"GetNextSpriteIndex: Level: {level}, max drop rate: {maxDropRate[level]}, chosen: {chosen}");
             uint ofs = 0;
             for (int i = 0; i < obstacleMetadata.Length; i++)
             {
