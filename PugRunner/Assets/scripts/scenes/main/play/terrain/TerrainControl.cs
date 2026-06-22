@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PugRunner {
 
-    public class GamePlayScene : MonoBehaviour {
+    public class TerrainControl : MonoBehaviour {
         private const string OBSTACLES_RESOURCE_PATH = "terrain";
 
         public RectTransform gamePanel;
@@ -21,12 +21,12 @@ namespace PugRunner {
 
 
         private Sprite[] obstacleSprites;
-        private ObstacleMetadata[] obstacleMetadata;
-        private int[] maxDropRate;
         private readonly List<MovingObstacle> activeObstacles = new List<MovingObstacle>();
-
         private ObstacleMetadataManager obstacleMetadataManager;
+
         private int level;
+
+        private GameStatsBoard statusBoard;
 
         void Start() {
             AuditLog.Log("GamePlay scene");
@@ -39,7 +39,7 @@ namespace PugRunner {
             }
 
             if (gamePanelRect == null || obstacleSprites == null || obstacleSprites.Length == 0) {
-                AuditLog.Log("GamePlayScene: missing GamePanel or obstacle sprites, obstacle spawning disabled");
+                AuditLog.Log("GamePlayScene: missing GamePanel or obstacle sprites");
                 return;
             }
 
@@ -50,6 +50,9 @@ namespace PugRunner {
             obstacleMetadataManager = new ObstacleMetadataManager(obstacleSprites, gameDay, gameType, instanceOfGame);
             
             level = 0;
+
+            statusBoard = FindAnyObjectByType<GameStatsBoard>();
+            statusBoard.SetInfo("Started");
         }
 
         // TODO this moves at the update rate, rather than at a fixed rate for all game players.
