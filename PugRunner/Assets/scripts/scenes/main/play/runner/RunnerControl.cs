@@ -25,6 +25,8 @@ namespace PugRunner {
 
         private DateTime timeOfLastChange;
 
+        private TerrainControl terrainControl;
+
         void Start() {
             AuditLog.Log("RunnerControl");
 
@@ -40,6 +42,8 @@ namespace PugRunner {
                 AuditLog.Log("RunnerControl: missing GamePanel or runner sprites");
                 return;
             }
+
+            terrainControl = FindAnyObjectByType<TerrainControl>();
 
             createRunnerObjects();
         }
@@ -59,8 +63,7 @@ namespace PugRunner {
                 activeRunnerSprite = (activeRunnerSprite + 1) % runnerObjects.Count;
                 runnerObjects[activeRunnerSprite].gameObject.SetActive(true);
             }
-
-
+            setVerticalPosition(runnerObjects[activeRunnerSprite]);
         }
 
         private void createRunnerObjects() {
@@ -88,6 +91,17 @@ namespace PugRunner {
 
                 runnerObjects.Add( rect );
             }
+        }
+
+        private void setVerticalPosition(RectTransform rect)
+        {
+            float middle = gamePanelRect.rect.width / 2f;
+            float width = scale * rect.sizeDelta.x;
+            float left = middle - width / 2f;
+            float right = middle + width / 2f;
+
+            float height = terrainControl.HighestTerrainInZone(left, right);
+            rect.anchoredPosition = new Vector2(gamePanelRect.rect.width / 2f, height);
         }
     }
 }

@@ -55,7 +55,6 @@ namespace PugRunner {
             statusBoard.SetInfo("Started");
         }
 
-        // TODO this moves at the update rate, rather than at a fixed rate for all game players.
         void Update() {
             if (gamePanelRect == null) {
                 return;
@@ -150,5 +149,27 @@ namespace PugRunner {
             return rightMostObstacle.rect.anchoredPosition.x + rightMostObstacle.rect.rect.width / 2.0f;
         }
 
+        public float HighestTerrainInZone(float left, float right) 
+        {
+            float height = 0.0f;
+
+            for (int i = activeObstacles.Count - 1; i >= 0; i--) {
+                MovingObstacle obstacle = activeObstacles[i];
+                float obstactHalfWidth = obstacle.rect.sizeDelta.x / 2f;
+                float obstacleLeft = obstacle.rect.anchoredPosition.x - obstactHalfWidth;
+                float obstacleRight = obstacle.rect.anchoredPosition.x + obstactHalfWidth;
+
+                if ((left < obstacleLeft && obstacleLeft < right) ||
+                    (left < obstacleRight && obstacleRight < right) ||
+                    (obstacleLeft < left && right < obstacleRight))
+                {
+                    if (height < obstacle.rect.sizeDelta.y)
+                    {
+                        height = obstacle.rect.sizeDelta.y;
+                    }
+                }
+            }
+            return height;
+        }
     }
 }
